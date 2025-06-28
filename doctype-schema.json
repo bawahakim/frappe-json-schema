@@ -5,30 +5,54 @@
   "$defs": {
     "postgresTimestamp": {
       "type": "string",
-      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?$"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?$",
+      "description": "Timestamp in PostgreSQL format (YYYY-MM-DD HH:MM:SS[.ffffff])."
     },
     "flag": {
       "type": "integer",
-      "enum": [0, 1]
+      "enum": [0, 1],
+      "description": "Boolean flag represented as 0 (false) or 1 (true)."
     }
   },
   "properties": {
     "doctype": {
       "type": "string",
-      "const": "DocType"
+      "const": "DocType",
+      "description": "Literal 'DocType' indicating this schema defines a Frappe DocType."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Unique machine-readable name of the DocType."
     },
     "module": {
-      "type": "string"
+      "type": "string",
+      "description": "Application module under which this DocType is categorized."
     },
-    "custom": { "$ref": "#/$defs/flag" },
-    "issingle": { "$ref": "#/$defs/flag" },
-    "istable": { "$ref": "#/$defs/flag" },
-    "autoname": { "type": ["string", "null"] },
-    "sort_field": { "type": "string" },
-    "sort_order": { "type": "string", "enum": ["ASC", "DESC"] },
+    "custom": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag indicating whether this DocType is user-created (1) or core (0)."
+    },
+    "issingle": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag: 1 if this DocType stores only a single document, 0 if it stores multiple rows."
+    },
+    "istable": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag: 1 if this DocType functions as a child table, 0 otherwise."
+    },
+    "autoname": {
+      "type": ["string", "null"],
+      "description": "Pattern or rule for automatic naming (e.g., 'field:fieldname', 'hash', custom script)."
+    },
+    "sort_field": {
+      "type": "string",
+      "description": "Field name used for default sorting in list views."
+    },
+    "sort_order": {
+      "type": "string",
+      "enum": ["ASC", "DESC"],
+      "description": "Default sort direction for list views."
+    },
     "naming_rule": {
       "type": "string",
       "enum": [
@@ -42,146 +66,259 @@
         "Random",
         "UUID",
         "By script"
-      ]
+      ],
+      "description": "Built-in naming strategy for naming new documents of this type."
     },
     "document_type": {
       "type": "string",
-      "enum": ["", "Document", "Setup", "System", "Other"]
+      "enum": ["", "Document", "Setup", "System", "Other"],
+      "description": "Categorization of the DocType for UI grouping and permissions."
     },
     "engine": {
       "type": "string",
-      "enum": ["InnoDB", "MyISAM"]
+      "enum": ["InnoDB", "MyISAM"],
+      "description": "SQL storage engine used for the underlying table."
     },
     "row_format": {
       "type": "string",
-      "enum": ["Dynamic", "Compressed"]
+      "enum": ["Dynamic", "Compressed"],
+      "description": "Row storage format for MySQL tables."
     },
     "_order": {
       "type": "string",
-      "enum": ["ASC", "DESC"]
+      "enum": ["ASC", "DESC"],
+      "description": "Internal field for ordering child records when fetched."
     },
     "fields": {
       "type": "array",
-      "items": { "$ref": "#/definitions/DocField" }
+      "items": { "$ref": "#/definitions/DocField" },
+      "description": "List of field definitions (DocField) available in this DocType."
     },
     "permissions": {
       "type": "array",
-      "items": { "$ref": "#/definitions/DocPerm" }
+      "items": { "$ref": "#/definitions/DocPerm" },
+      "description": "Array of permission rules defining read/write/create rights for roles."
     },
     "links": {
       "type": "array",
-      "items": { "$ref": "#/definitions/DocTypeLink" }
+      "items": { "$ref": "#/definitions/DocTypeLink" },
+      "description": "Definitions of linked DocTypes for user navigation (via link fields)."
     },
     "states": {
       "type": "array",
-      "items": { "$ref": "#/definitions/DocTypeState" }
+      "items": { "$ref": "#/definitions/DocTypeState" },
+      "description": "Workflow states available for this DocType."
     },
     "actions": {
       "type": "array",
-      "items": { "$ref": "#/definitions/DocTypeAction" }
+      "items": { "$ref": "#/definitions/DocTypeAction" },
+      "description": "Custom actions (buttons/scripts) that appear on the form."
     },
     "field_order": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": { "type": "string" },
+      "description": "Explicit ordering of fieldnames for UI rendering."
     },
     "description": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Short text description of the DocType's purpose."
     },
     "documentation": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Long-form HTML or Markdown documentation for end users."
     },
     "default_email_template": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Name of the default email template used when emailing documents."
     },
     "default_print_format": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Default print format name for printing documents."
     },
     "default_view": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Default view mode (e.g., List, Form, Report) when opening this DocType."
     },
-    "email_append_to": { "$ref": "#/$defs/flag" },
+    "email_append_to": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to append incoming emails to existing records if matched."
+    },
     "icon": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Icon name (from Font Awesome) displayed for this DocType."
     },
     "color": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Hex color code used alongside the icon in list views."
     },
     "image_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Fieldname of an image-type field used as thumbnail."
     },
-    "idx": { "type": "integer" },
-    "is_published_field": { "type": ["string", "null"] },
+    "idx": {
+      "type": "integer",
+      "description": "Sequence index controlling DocType load order in fixtures."
+    },
+    "is_published_field": {
+      "type": ["string", "null"],
+      "description": "Fieldname used to mark documents as published/unpublished."
+    },
     "route": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Custom URL path used to route to this DocType's list or form."
     },
     "search_fields": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Comma-separated fieldnames to search on from global search."
     },
-    "show_name_in_global_search": { "$ref": "#/$defs/flag" },
+    "show_name_in_global_search": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag: 1 to include the 'name' field in global search results."
+    },
     "subject_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Field displayed as subject when emailing document notifications."
     },
     "title_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Field used as title/header in list views and links."
     },
     "timeline_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Field used to order entries in the document timeline."
     },
     "sender_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Fieldname storing the email address for outbound messages."
     },
     "sender_name_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Fieldname storing the sender name for outbound emails."
     },
     "restrict_to_domain": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Restrict usage of this DocType to a specific domain."
     },
     "nsm_parent_field": {
-      "type": ["string", "null"]
+      "type": ["string", "null"],
+      "description": "Fieldname used in nested set trees to define parent link."
     },
     "grid_page_length": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Number of rows per page in grid view mode."
     },
     "rows_threshold_for_grid_search": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Minimum row count to enable grid search functionality."
     },
     "max_attachments": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Maximum number of file attachments allowed per document."
     },
-    "beta": { "$ref": "#/$defs/flag" },
-    "allow_copy": { "$ref": "#/$defs/flag" },
-    "allow_rename": { "$ref": "#/$defs/flag" },
-    "allow_import": { "$ref": "#/$defs/flag" },
-    "allow_auto_repeat": { "$ref": "#/$defs/flag" },
-    "allow_events_in_timeline": { "$ref": "#/$defs/flag" },
-    "allow_guest_to_view": { "$ref": "#/$defs/flag" },
-    "force_re_route_to_default_view": { "$ref": "#/$defs/flag" },
-    "editable_grid": { "$ref": "#/$defs/flag" },
-    "has_web_view": { "$ref": "#/$defs/flag" },
-    "hide_toolbar": { "$ref": "#/$defs/flag" },
-    "in_create": { "$ref": "#/$defs/flag" },
-    "index_web_pages_for_search": { "$ref": "#/$defs/flag" },
-    "is_calendar_and_gantt": { "$ref": "#/$defs/flag" },
-    "is_submittable": { "$ref": "#/$defs/flag" },
-    "is_tree": { "$ref": "#/$defs/flag" },
-    "is_virtual": { "$ref": "#/$defs/flag" },
-    "make_attachments_public": { "$ref": "#/$defs/flag" },
-    "protect_attached_files": { "$ref": "#/$defs/flag" },
-    "queue_in_background": { "$ref": "#/$defs/flag" },
-    "quick_entry": { "$ref": "#/$defs/flag" },
-    "read_only": { "$ref": "#/$defs/flag" },
-    "show_title_field_in_link": { "$ref": "#/$defs/flag" },
-    "track_changes": { "$ref": "#/$defs/flag" },
-    "track_seen": { "$ref": "#/$defs/flag" },
-    "track_views": { "$ref": "#/$defs/flag" },
-    "translated_doctype": { "$ref": "#/$defs/flag" },
-    "creation": { "$ref": "#/$defs/postgresTimestamp" },
-    "modified": { "$ref": "#/$defs/postgresTimestamp" },
+    "beta": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag indicating if this DocType is in beta/testing stage."
+    },
+    "allow_copy": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to allow users to copy/duplicate documents."
+    },
+    "allow_rename": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to allow manual renaming of document 'name' field."
+    },
+    "allow_import": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to enable data import via CSV or Data Import tool."
+    },
+    "allow_auto_repeat": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to enable auto-repeat scheduling for documents."
+    },
+    "allow_events_in_timeline": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to show system events in the timeline panel."
+    },
+    "allow_guest_to_view": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to let guest (unauthenticated) users view records."
+    },
+    "force_re_route_to_default_view": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to always redirect to default view on list open."
+    },
+    "editable_grid": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag enabling inline editing in grid view."
+    },
+    "has_web_view": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag indicating if this DocType has a web (website) view."
+    },
+    "hide_toolbar": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to hide the form toolbar (actions/buttons)."
+    },
+    "in_create": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag set during document creation for special scripting."
+    },
+    "index_web_pages_for_search": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to index generated web pages for site search."
+    },
+    "is_calendar_and_gantt": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to enable calendar and Gantt views."
+    },
+    "is_submittable": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag indicating if documents require submission workflow."
+    },
+    "is_tree": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to treat this DocType as a tree/hierarchy."
+    },
+    "is_virtual": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag: 1 if this DocType is virtual (no DB table)."
+    },
+    "make_attachments_public": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to make attached files publicly accessible."
+    },
+    "protect_attached_files": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to restrict access to attached files."
+    },
+    "queue_in_background": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to process document events in background jobs."
+    },
+
+    "track_views": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag to track how many times a record is viewed."
+    },
+    "translated_doctype": {
+      "$ref": "#/$defs/flag",
+      "description": "Flag indicating if the DocType is configured for translations."
+    },
+    "creation": {
+      "$ref": "#/$defs/postgresTimestamp",
+      "description": "Record creation timestamp."
+    },
+    "modified": {
+      "$ref": "#/$defs/postgresTimestamp",
+      "description": "Timestamp of last modification."
+    },
     "modified_by": {
-      "type": "string"
+      "type": "string",
+      "description": "User ID of last modifier."
     },
     "owner": {
-      "type": "string"
+      "type": "string",
+      "description": "User ID of the document owner."
     }
   },
   "required": ["doctype", "name", "module", "fields", "permissions"],
@@ -190,21 +327,66 @@
     "DocField": {
       "type": "object",
       "properties": {
-        "fieldname": { "type": "string" },
-        "fieldtype": { "type": "string" },
-        "label": { "type": "string" },
-        "options": { "type": "string" },
-        "default": { "type": "string" },
-        "description": { "type": "string" },
-        "reqd": { "$ref": "#/$defs/flag" },
-        "depends_on": { "type": "string" },
-        "mandatory_depends_on": { "type": "string" },
-        "in_list_view": { "$ref": "#/$defs/flag" },
-        "read_only": { "$ref": "#/$defs/flag" },
-        "hidden": { "$ref": "#/$defs/flag" },
-        "width": { "type": "string" },
-        "precision": { "type": "string" },
-        "pattern": { "type": "string" }
+        "fieldname": {
+          "type": "string",
+          "description": "Unique internal name of the field within the DocType"
+        },
+        "fieldtype": {
+          "type": "string",
+          "description": "Type of the field (e.g., Data, Link, Select, Check)"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label shown in the form"
+        },
+        "options": {
+          "type": "string",
+          "description": "Additional parameters—such as target DocType for Link fields or list of values for Select"
+        },
+        "default": {
+          "type": "string",
+          "description": "Default value prefilled when creating a new document"
+        },
+        "description": {
+          "type": "string",
+          "description": "Help text or tooltip explaining the purpose of the field"
+        },
+        "reqd": {
+          "$ref": "#/$defs/flag",
+          "description": "Flag indicating whether this field is mandatory"
+        },
+        "depends_on": {
+          "type": "string",
+          "description": "Server-side condition expression to determine field visibility"
+        },
+        "mandatory_depends_on": {
+          "type": "string",
+          "description": "Condition expression that makes the field required when true"
+        },
+        "in_list_view": {
+          "$ref": "#/$defs/flag",
+          "description": "Flag to include this field in list or report views"
+        },
+        "read_only": {
+          "$ref": "#/$defs/flag",
+          "description": "Flag preventing edits on the field in the form"
+        },
+        "hidden": {
+          "$ref": "#/$defs/flag",
+          "description": "Flag to hide the field from the form"
+        },
+        "width": {
+          "type": "string",
+          "description": "Width of the field in list view (e.g., '120px' or '20%')"
+        },
+        "precision": {
+          "type": "string",
+          "description": "Number of decimal places for numeric fields"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regular expression to validate input on the client side"
+        }
       },
       "required": ["fieldname", "fieldtype"],
       "additionalProperties": true
@@ -212,19 +394,58 @@
     "DocPerm": {
       "type": "object",
       "properties": {
-        "role": { "type": "string" },
-        "read": { "$ref": "#/$defs/flag" },
-        "write": { "$ref": "#/$defs/flag" },
-        "create": { "$ref": "#/$defs/flag" },
-        "delete": { "$ref": "#/$defs/flag" },
-        "submit": { "$ref": "#/$defs/flag" },
-        "cancel": { "$ref": "#/$defs/flag" },
-        "amend": { "$ref": "#/$defs/flag" },
-        "report": { "$ref": "#/$defs/flag" },
-        "export": { "$ref": "#/$defs/flag" },
-        "print": { "$ref": "#/$defs/flag" },
-        "email": { "$ref": "#/$defs/flag" },
-        "share": { "$ref": "#/$defs/flag" }
+        "role": {
+          "type": "string",
+          "description": "Name of the Role to which this permission applies"
+        },
+        "read": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to view documents"
+        },
+        "write": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to modify existing documents"
+        },
+        "create": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to create new documents"
+        },
+        "delete": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to delete documents"
+        },
+        "submit": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to submit documents (for workflows)"
+        },
+        "cancel": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to cancel submitted documents"
+        },
+        "amend": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to amend canceled documents"
+        },
+        "report": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to view or generate reports"
+        },
+        "export": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to export data as CSV or other formats"
+        },
+        "print": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to print documents"
+        },
+        "email": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to send documents via email"
+        },
+        "share": {
+          "$ref": "#/$defs/flag",
+          "description": "Permission to share links to the document"
+        }
       },
       "required": ["role"],
       "additionalProperties": true
@@ -232,9 +453,18 @@
     "DocTypeLink": {
       "type": "object",
       "properties": {
-        "link_doctype": { "type": "string" },
-        "link_field": { "type": "string" },
-        "label": { "type": "string" }
+        "link_doctype": {
+          "type": "string",
+          "description": "Name of the linked DocType"
+        },
+        "link_field": {
+          "type": "string",
+          "description": "Field in the linked DocType that establishes the relationship"
+        },
+        "label": {
+          "type": "string",
+          "description": "Custom label to display for this link"
+        }
       },
       "required": ["link_doctype"],
       "additionalProperties": true
@@ -242,8 +472,14 @@
     "DocTypeState": {
       "type": "object",
       "properties": {
-        "color": { "type": "string" },
-        "title": { "type": "string" }
+        "color": {
+          "type": "string",
+          "description": "Hex code or CSS color name used for the state badge"
+        },
+        "title": {
+          "type": "string",
+          "description": "Label text displayed for this state"
+        }
       },
       "required": ["color", "title"],
       "additionalProperties": true
@@ -251,9 +487,18 @@
     "DocTypeAction": {
       "type": "object",
       "properties": {
-        "action": { "type": "string" },
-        "action_label": { "type": "string" },
-        "conditional": { "type": "string" }
+        "action": {
+          "type": "string",
+          "description": "Name of the server-side method or action to invoke"
+        },
+        "action_label": {
+          "type": "string",
+          "description": "Text shown on the button or menu for this action"
+        },
+        "conditional": {
+          "type": "string",
+          "description": "Client-side condition expression to enable or hide the action"
+        }
       },
       "required": ["action"],
       "additionalProperties": true
