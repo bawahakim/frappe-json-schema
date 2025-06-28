@@ -1,0 +1,262 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Frappe DocType JSON",
+  "type": "object",
+  "$defs": {
+    "postgresTimestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?$"
+    },
+    "flag": {
+      "type": "integer",
+      "enum": [0, 1]
+    }
+  },
+  "properties": {
+    "doctype": {
+      "type": "string",
+      "const": "DocType"
+    },
+    "name": {
+      "type": "string"
+    },
+    "module": {
+      "type": "string"
+    },
+    "custom": { "$ref": "#/$defs/flag" },
+    "issingle": { "$ref": "#/$defs/flag" },
+    "istable": { "$ref": "#/$defs/flag" },
+    "autoname": { "type": ["string", "null"] },
+    "sort_field": { "type": "string" },
+    "sort_order": { "type": "string", "enum": ["ASC", "DESC"] },
+    "naming_rule": {
+      "type": "string",
+      "enum": [
+        "",
+        "Set by user",
+        "Autoincrement",
+        "By fieldname",
+        "By \"Naming Series\" field",
+        "Expression",
+        "Expression (old style)",
+        "Random",
+        "UUID",
+        "By script"
+      ]
+    },
+    "document_type": {
+      "type": "string",
+      "enum": ["", "Document", "Setup", "System", "Other"]
+    },
+    "engine": {
+      "type": "string",
+      "enum": ["InnoDB", "MyISAM"]
+    },
+    "row_format": {
+      "type": "string",
+      "enum": ["Dynamic", "Compressed"]
+    },
+    "_order": {
+      "type": "string",
+      "enum": ["ASC", "DESC"]
+    },
+    "fields": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DocField" }
+    },
+    "permissions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DocPerm" }
+    },
+    "links": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DocTypeLink" }
+    },
+    "states": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DocTypeState" }
+    },
+    "actions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DocTypeAction" }
+    },
+    "field_order": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "documentation": {
+      "type": ["string", "null"]
+    },
+    "default_email_template": {
+      "type": ["string", "null"]
+    },
+    "default_print_format": {
+      "type": ["string", "null"]
+    },
+    "default_view": {
+      "type": ["string", "null"]
+    },
+    "email_append_to": { "$ref": "#/$defs/flag" },
+    "icon": {
+      "type": ["string", "null"]
+    },
+    "color": {
+      "type": ["string", "null"]
+    },
+    "image_field": {
+      "type": ["string", "null"]
+    },
+    "idx": { "type": "integer" },
+    "is_published_field": { "type": ["string", "null"] },
+    "route": {
+      "type": ["string", "null"]
+    },
+    "search_fields": {
+      "type": ["string", "null"]
+    },
+    "show_name_in_global_search": { "$ref": "#/$defs/flag" },
+    "subject_field": {
+      "type": ["string", "null"]
+    },
+    "title_field": {
+      "type": ["string", "null"]
+    },
+    "timeline_field": {
+      "type": ["string", "null"]
+    },
+    "sender_field": {
+      "type": ["string", "null"]
+    },
+    "sender_name_field": {
+      "type": ["string", "null"]
+    },
+    "restrict_to_domain": {
+      "type": ["string", "null"]
+    },
+    "nsm_parent_field": {
+      "type": ["string", "null"]
+    },
+    "grid_page_length": {
+      "type": "integer"
+    },
+    "rows_threshold_for_grid_search": {
+      "type": "integer"
+    },
+    "max_attachments": {
+      "type": "integer"
+    },
+    "beta": { "$ref": "#/$defs/flag" },
+    "allow_copy": { "$ref": "#/$defs/flag" },
+    "allow_rename": { "$ref": "#/$defs/flag" },
+    "allow_import": { "$ref": "#/$defs/flag" },
+    "allow_auto_repeat": { "$ref": "#/$defs/flag" },
+    "allow_events_in_timeline": { "$ref": "#/$defs/flag" },
+    "allow_guest_to_view": { "$ref": "#/$defs/flag" },
+    "force_re_route_to_default_view": { "$ref": "#/$defs/flag" },
+    "editable_grid": { "$ref": "#/$defs/flag" },
+    "has_web_view": { "$ref": "#/$defs/flag" },
+    "hide_toolbar": { "$ref": "#/$defs/flag" },
+    "in_create": { "$ref": "#/$defs/flag" },
+    "index_web_pages_for_search": { "$ref": "#/$defs/flag" },
+    "is_calendar_and_gantt": { "$ref": "#/$defs/flag" },
+    "is_submittable": { "$ref": "#/$defs/flag" },
+    "is_tree": { "$ref": "#/$defs/flag" },
+    "is_virtual": { "$ref": "#/$defs/flag" },
+    "make_attachments_public": { "$ref": "#/$defs/flag" },
+    "protect_attached_files": { "$ref": "#/$defs/flag" },
+    "queue_in_background": { "$ref": "#/$defs/flag" },
+    "quick_entry": { "$ref": "#/$defs/flag" },
+    "read_only": { "$ref": "#/$defs/flag" },
+    "show_title_field_in_link": { "$ref": "#/$defs/flag" },
+    "track_changes": { "$ref": "#/$defs/flag" },
+    "track_seen": { "$ref": "#/$defs/flag" },
+    "track_views": { "$ref": "#/$defs/flag" },
+    "translated_doctype": { "$ref": "#/$defs/flag" },
+    "creation": { "$ref": "#/$defs/postgresTimestamp" },
+    "modified": { "$ref": "#/$defs/postgresTimestamp" },
+    "modified_by": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    }
+  },
+  "required": ["doctype", "name", "module", "fields", "permissions"],
+  "additionalProperties": false,
+  "definitions": {
+    "DocField": {
+      "type": "object",
+      "properties": {
+        "fieldname": { "type": "string" },
+        "fieldtype": { "type": "string" },
+        "label": { "type": "string" },
+        "options": { "type": "string" },
+        "default": { "type": "string" },
+        "description": { "type": "string" },
+        "reqd": { "$ref": "#/$defs/flag" },
+        "depends_on": { "type": "string" },
+        "mandatory_depends_on": { "type": "string" },
+        "in_list_view": { "$ref": "#/$defs/flag" },
+        "read_only": { "$ref": "#/$defs/flag" },
+        "hidden": { "$ref": "#/$defs/flag" },
+        "width": { "type": "string" },
+        "precision": { "type": "string" },
+        "pattern": { "type": "string" }
+      },
+      "required": ["fieldname", "fieldtype"],
+      "additionalProperties": true
+    },
+    "DocPerm": {
+      "type": "object",
+      "properties": {
+        "role": { "type": "string" },
+        "read": { "$ref": "#/$defs/flag" },
+        "write": { "$ref": "#/$defs/flag" },
+        "create": { "$ref": "#/$defs/flag" },
+        "delete": { "$ref": "#/$defs/flag" },
+        "submit": { "$ref": "#/$defs/flag" },
+        "cancel": { "$ref": "#/$defs/flag" },
+        "amend": { "$ref": "#/$defs/flag" },
+        "report": { "$ref": "#/$defs/flag" },
+        "export": { "$ref": "#/$defs/flag" },
+        "print": { "$ref": "#/$defs/flag" },
+        "email": { "$ref": "#/$defs/flag" },
+        "share": { "$ref": "#/$defs/flag" }
+      },
+      "required": ["role"],
+      "additionalProperties": true
+    },
+    "DocTypeLink": {
+      "type": "object",
+      "properties": {
+        "link_doctype": { "type": "string" },
+        "link_field": { "type": "string" },
+        "label": { "type": "string" }
+      },
+      "required": ["link_doctype"],
+      "additionalProperties": true
+    },
+    "DocTypeState": {
+      "type": "object",
+      "properties": {
+        "color": { "type": "string" },
+        "title": { "type": "string" }
+      },
+      "required": ["color", "title"],
+      "additionalProperties": true
+    },
+    "DocTypeAction": {
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "action_label": { "type": "string" },
+        "conditional": { "type": "string" }
+      },
+      "required": ["action"],
+      "additionalProperties": true
+    }
+  }
+}
