@@ -12,6 +12,41 @@
       "type": "integer",
       "enum": [0, 1],
       "description": "Boolean flag represented as 0 (false) or 1 (true)."
+    },
+    "fieldType": {
+      "type": "string",
+      "enum": [
+        "Attach",
+        "Attach Image",
+        "Autocomplete",
+        "Barcode",
+        "Check",
+        "Code",
+        "Color",
+        "Currency",
+        "Data",
+        "Date Range",
+        "Date",
+        "Datetime",
+        "Dynamic Link",
+        "Float",
+        "Geolocation",
+        "HTML Editor",
+        "Int",
+        "Link",
+        "Markdown Editor",
+        "MultiCheck",
+        "MultiSelect",
+        "Password",
+        "Rating",
+        "Select",
+        "Signature",
+        "Text Editor",
+        "Time",
+        "Button",
+        "Icon"
+      ],
+      "description": "One of the valid Frappe field types."
     }
   },
   "properties": {
@@ -332,8 +367,7 @@
           "description": "Unique internal name of the field within the DocType"
         },
         "fieldtype": {
-          "type": "string",
-          "description": "Type of the field (e.g., Data, Link, Select, Check)"
+          "$ref": "#/$defs/fieldType"
         },
         "label": {
           "type": "string",
